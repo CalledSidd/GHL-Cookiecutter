@@ -6,11 +6,16 @@ from django.conf import settings
 # Create your views here.
 class BaseView(View):
     template = 'auth.html'
+
+    def get_access_token(self, code):
+        pass
+
+
     def get(self, request):
        url = settings.GHL_URL
-       print(url)
        code =  request.GET.get('code')
-       print(code)
+       if code:
+           self.get_access_token(code)
        context = {
            'code' : code,
            'url' : url
