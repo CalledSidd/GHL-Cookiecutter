@@ -25,7 +25,7 @@ class BaseView(View):
         data = {
             "client_id" : client_id,
             "client_secret" : client_secret,
-            "grant_type" : "",
+            "grant_type" : "", #go and check the api calls in the website for the grant type
             "code" : code,
             "redirect_uri" : "http://localhost:8000/success"
         }
