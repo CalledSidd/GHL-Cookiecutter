@@ -20,10 +20,17 @@ class BaseView(View):
             "Accept" : "application/json",
             "Content-Type" : "application/x-www-form-urlencoded"
         }
+
+        data = {
+            "client_id" : client_id,
+            "client_secret" : client_secret,
+            "code" : code,
+            "user_type" : location,
+            "redirect_uri" : "http://localhost:8000/success"
+        }
         
         
-        
-        access = requests.post(access_url)
+        access = requests.post(access_url, headers=headers, data=data)
 
 
     def get(self, request):
@@ -36,3 +43,8 @@ class BaseView(View):
            'url' : url
        }
        return render(request, self.template, context)
+    
+
+
+def success(request):
+    return render(request, 'succes.html')
