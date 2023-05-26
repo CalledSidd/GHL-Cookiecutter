@@ -19,6 +19,16 @@ scope=contacts.readonly%20contacts.write%20locations/customFields.readonly%20loc
 write%20calendars.readonly%20calendars/events
 .readonly%20calendars/events.write%20locations.readonly
 
+
+Edited scopes one - Working 
+https://marketplace.gohighlevel.com/oauth/
+chooselocation?response_type=code&
+redirect_uri=localhost:8000&
+client_id=646f44562487904ab0f40b23-li31n7et
+scope=contacts.readonly%20contacts.write%20locations/customFields.readonly%20locations/customFields.write%20locations/customValues.readonly%20opportunities.readonly%20opportunities.write%20locations/tasks.readonly
+
+
+
 location id = "eaW9uCxoHk3B1lJtnJxX"
 
 
