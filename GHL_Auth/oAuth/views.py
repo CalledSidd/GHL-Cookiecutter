@@ -13,6 +13,7 @@ class BaseView(View):
         client_id = settings.CLIENT_ID
         client_secret = settings.CLIENT_SECRET
         location = settings.LOCATION
+        print(location)
         
         access_url = 'https://services.leadconnectorhq.com/oauth/token'
         
@@ -24,6 +25,7 @@ class BaseView(View):
         data = {
             "client_id" : client_id,
             "client_secret" : client_secret,
+            "grant_type" : "",
             "code" : code,
             "user_type" : location,
             "redirect_uri" : "http://localhost:8000/success"
@@ -31,6 +33,7 @@ class BaseView(View):
         
         
         access = requests.post(access_url, headers=headers, data=data)
+        print(access.json())
 
 
     def get(self, request):
