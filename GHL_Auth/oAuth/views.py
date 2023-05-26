@@ -3,12 +3,27 @@ from django.views import View
 
 from django.conf import settings
 
+import requests
+
 # Create your views here.
 class BaseView(View):
     template = 'auth.html'
 
     def get_access_token(self, code):
-        pass
+        client_id = settings.CLIENT_ID
+        client_secret = settings.CLIENT_SECRET
+        location = settings.LOCATION
+        
+        access_url = 'https://services.leadconnectorhq.com/oauth/token'
+        
+        headers = {
+            "Accept" : "application/json",
+            "Content-Type" : "application/x-www-form-urlencoded"
+        }
+        
+        
+        
+        access = requests.post(access_url)
 
 
     def get(self, request):
