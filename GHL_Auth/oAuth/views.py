@@ -27,7 +27,6 @@ class BaseView(View):
             "client_secret" : client_secret,
             "grant_type" : "",
             "code" : code,
-            "user_type" : location,
             "redirect_uri" : "http://localhost:8000/success"
         }
         
