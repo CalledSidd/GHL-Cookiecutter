@@ -8,6 +8,6 @@ class BaseView(View):
        code =  request.GET.get('code')
        print(code)
        context = {
-           code : 'code'
+           'code' : code
        }
        return render(request, self.template, context)

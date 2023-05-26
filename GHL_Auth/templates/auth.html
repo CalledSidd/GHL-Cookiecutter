@@ -12,7 +12,8 @@
             <span>GHL Private API Access Code</span>
             {% if code %}
             <input  value={{code}} class='w-full h-full shadow-xl border border-gray-300'/>
-            <!-- <input  placeholder='Enter GHL Private API Access Code' class='w-full h-full shadow-xl border border-gray-300'/> -->
+            {% else %}
+            <input  placeholder='Enter GHL Private API Access Code' class='w-full h-full shadow-xl border border-gray-300'/>
             {% endif%}
         </div>
         <div class='md:flex m-14 md:gap-14'>
