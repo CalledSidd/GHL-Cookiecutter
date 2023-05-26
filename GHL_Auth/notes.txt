@@ -1,0 +1,11 @@
+SQL TABLE Creation Code referece this for the backend 
+
+
+create table api_keys_data(id int PRIMARY KEY AUTO_INCREMENT,
+ghl_location_id VARCHAR ( 50 ) UNIQUE NOT NULL,
+ghl_location_name VARCHAR ( 500 ) NOT NULL,
+ghl_oauth_token VARCHAR (50) NOT NULL,
+ghl_refresh_token VARCHAR (50) NOT NULL,
+ghl_oauth_token_expires_on INT NOT NULL,
+ghl_location_api_key VARCHAR (500) NOT NULL,
+created_on TIMESTAMP NOT NULL)
