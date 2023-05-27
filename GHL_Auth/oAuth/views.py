@@ -52,6 +52,7 @@ class BaseView(View):
     def post(self, request):
         location = request.POST["location"]
         code     = request.POST["code"]
+        print(location, code)
         return redirect(success)
     
 

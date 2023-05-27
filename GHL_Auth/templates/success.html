@@ -1,8 +1,14 @@
 {% extends 'base.html' %}
+{% load static %}
 
 {% block content %}
 
+<div class='w-screen h-screen flex justify-center items-center text-rose-500'>
+    <div class='w-2/3 h-2/3 border border-rose-500 flex justify-center items-center'>
+        <img src={% static '/images/tick.png' %} alt="">
+        <h1 class='text-2xl'>Success</h1>
+    </div>
 
-<h1>Success</h1>
+</div>
 
 {% endblock content%}
