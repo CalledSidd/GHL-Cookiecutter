@@ -3,6 +3,9 @@ from django.views import View
 
 from django.conf import settings
 
+
+from pprint import pprint
+
 import requests
 
 # Create your views here.
@@ -25,14 +28,14 @@ class BaseView(View):
         data = {
             "client_id" : client_id,
             "client_secret" : client_secret,
-            "grant_type" : "", #go and check the api calls in the website for the grant type
+            "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
             "code" : code,
             "redirect_uri" : "http://localhost:8000/success"
         }
         
         
         access = requests.post(access_url, headers=headers, data=data)
-        print(access.json())
+        pprint(access.json())
 
 
     def get(self, request):
