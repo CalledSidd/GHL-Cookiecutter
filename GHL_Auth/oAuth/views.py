@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render,redirect
 from django.views import View
 
 from django.conf import settings
@@ -12,7 +12,7 @@ import requests
 class BaseView(View):
     template = 'auth.html'
 
-    def get_access_token(self, code, location):
+    def get_access_token(self, code):
         client_id = settings.CLIENT_ID
         client_secret = settings.CLIENT_SECRET
         lctn = settings.LOCATION
@@ -51,8 +51,12 @@ class BaseView(View):
     
     def post(self, request):
         print("POST Method")
+        location = request.POST.get('location')
+        code = request.POST.get('code')
+        print(location, code)
+        return redirect(success)
     
 
 
 def success(request):
-    return render(request, 'succes.html')
+    return render(request, 'success.html')
