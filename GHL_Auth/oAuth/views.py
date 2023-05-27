@@ -4,15 +4,18 @@ from django.views import View
 from django.conf import settings
 
 
+from . models import Api_Key_Data
+
 from pprint import pprint
 
 import requests
+import json
 
 # Create your views here.
 class BaseView(View):
     template = 'auth.html'
 
-    def get_access_token(self, code):
+    def get_access_token(self, code, location):
         client_id = settings.CLIENT_ID
         client_secret = settings.CLIENT_SECRET
         access_url = 'https://services.leadconnectorhq.com/oauth/token'
@@ -28,20 +31,18 @@ class BaseView(View):
             "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
             "code" : code,
             "redirect_uri" : "http://localhost:8000/success"
-        }
-        
+        }        
         
         access = requests.post(access_url, headers=headers, data=data)
-        pprint(access.json())
+        vals = access.json()
+        pprint(vals)
+        print(vals['access_token'])
+        
 
 
     def get(self, request):
        url = settings.GHL_URL
        code =  request.GET.get('code')
-       if code:
-           self.get_access_token(code)
-       else:
-           print("Not working")
        context = {
            'code' : code,
            'url' : url
@@ -53,7 +54,7 @@ class BaseView(View):
             location = request.POST["location"]
             code     = request.POST["code"]
             if location and code:
-                self.get_access_token(code=code)
+                self.get_access_token(code=code, location=location)
         except:
             return redirect(self.get)
         return redirect(success)
