@@ -37,7 +37,15 @@ class BaseView(View):
         vals = access.json()
         pprint(vals)
         print(vals['access_token'])
-        
+
+        data = Api_Key_Data(
+            access_token = vals['access_token'],
+            companyId = vals['companyId'],
+            access_expires_in = vals['expires_in'],
+            locationId = vals['locationId'],
+            refresh_token = vals['refresh_token'],
+        )
+
 
 
     def get(self, request):
