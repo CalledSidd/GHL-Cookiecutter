@@ -15,7 +15,6 @@ class BaseView(View):
     def get_access_token(self, code):
         client_id = settings.CLIENT_ID
         client_secret = settings.CLIENT_SECRET
-        lctn = settings.LOCATION
         access_url = 'https://services.leadconnectorhq.com/oauth/token'
         
         headers = {
@@ -50,9 +49,13 @@ class BaseView(View):
        return render(request, self.template, context)
     
     def post(self, request):
-        location = request.POST["location"]
-        code     = request.POST["code"]
-        print(location, code)
+        try:
+            location = request.POST["location"]
+            code     = request.POST["code"]
+            if location and code:
+                self.get_access_token(code=code)
+        except:
+            return redirect(self.get)
         return redirect(success)
     
 
