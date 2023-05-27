@@ -45,6 +45,7 @@ class BaseView(View):
             locationId = vals['locationId'],
             refresh_token = vals['refresh_token'],
         )
+        data.save()
 
 
 
