@@ -12,12 +12,10 @@ import requests
 class BaseView(View):
     template = 'auth.html'
 
-    def get_access_token(self, code):
+    def get_access_token(self, code, location):
         client_id = settings.CLIENT_ID
         client_secret = settings.CLIENT_SECRET
-        location = settings.LOCATION
-        print(location)
-        
+        lctn = settings.LOCATION
         access_url = 'https://services.leadconnectorhq.com/oauth/token'
         
         headers = {
@@ -43,11 +41,16 @@ class BaseView(View):
        code =  request.GET.get('code')
        if code:
            self.get_access_token(code)
+       else:
+           print("Not working")
        context = {
            'code' : code,
            'url' : url
        }
        return render(request, self.template, context)
+    
+    def post(self, request):
+        print("POST Method")
     
 
 
