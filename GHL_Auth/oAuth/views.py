@@ -50,10 +50,8 @@ class BaseView(View):
        return render(request, self.template, context)
     
     def post(self, request):
-        print("POST Method")
-        location = request.POST.get('location')
-        code = request.POST.get('code')
-        print(location, code)
+        location = request.POST["location"]
+        code     = request.POST["code"]
         return redirect(success)
     
 
