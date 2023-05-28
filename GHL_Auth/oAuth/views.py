@@ -37,13 +37,14 @@ class BaseView(View):
         pprint(vals)
         print(vals['access_token'])
         try:
-            data = Api_Key_Data(
-                access_token = vals['access_token'],
-                companyId = vals['companyId'],
-                access_expires_in = vals['expires_in'],
-                locationId = vals['locationId'],
-                refresh_token = vals['refresh_token'],
-            )
+            if vals['locationId'] not in Api_Key_Data:
+                data = Api_Key_Data(
+                    access_token = vals['access_token'],
+                    companyId = vals['companyId'],
+                    access_expires_in = vals['expires_in'],
+                    locationId = vals['locationId'],
+                    refresh_token = vals['refresh_token'],
+                )
         except Exception as e:
             print(e, "This is the occured exception")
             data = Api_Key_Data.objects.get(location = location)
