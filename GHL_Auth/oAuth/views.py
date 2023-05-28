@@ -27,6 +27,7 @@ class BaseView(View):
 
     def get_refresh_token(self, location):
         obj = Api_Key_Data.objects.get(locationId = location)
+        print(type(obj.refresh_token))
         data = {
             "client_id" : self.client_id,
             "client_secret" : self.client_secret,
@@ -50,7 +51,7 @@ class BaseView(View):
         data = {
             "client_id" : self.client_id,
             "client_secret" : self.client_secret,
-            "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
+            "grant_type" : "authorization_code", 
             "code" : code,
             "redirect_uri" : self.redirect_url
         }        
