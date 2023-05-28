@@ -14,27 +14,29 @@ import json
 # Create your views here.
 class BaseView(View):
     template = 'auth.html'
+    client_id = settings.CLIENT_ID
+    client_secret = settings.CLIENT_SECRET
+    access_url = 'https://services.leadconnectorhq.com/oauth/token'
+    
+    headers = {
+        "Accept" : "application/json",
+        "Content-Type" : "application/x-www-form-urlencoded"
+    }
 
-    def get_access_token(self, code, location):
-        client_id = settings.CLIENT_ID
-        client_secret = settings.CLIENT_SECRET
-        access_url = 'https://services.leadconnectorhq.com/oauth/token'
-        
-        headers = {
-            "Accept" : "application/json",
-            "Content-Type" : "application/x-www-form-urlencoded"
-        }
+
+    def get_refresh_token(self, location):
+        print(location)
+        obj = Api_Key_Data.objects.get(locationId = location)
+        print(obj.refresh_token)
         data = {
-            "client_id" : client_id,
-            "client_secret" : client_secret,
-            "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
-            "code" : code,
-            "redirect_uri" : "http://localhost:8000/success"
-        }        
-        
-        access = requests.post(access_url, headers=headers, data=data)
-        vals = access.json()
-        pprint(vals)
+            "client_id" : self.client_id,
+            "client_secret" : self.client_secret,
+            "grant_type" : "refresh_token",
+            "refresh_token" : obj.refresh_token,
+            "redirect_uri" : "http://localhost:8000/success",
+        }
+        refresh = requests.post(self.access_url, headers=self.headers, data=data)
+        vals = refresh.json()
         try:
             data = Api_Key_Data(
                 access_token = vals['access_token'],
@@ -43,12 +45,34 @@ class BaseView(View):
                 locationId = vals['locationId'],
                 refresh_token = vals['refresh_token'],
             )
-            data.save(update_fields=['access_token', 'access_expires_in','refresh_token'])
+            data.save()
+        except Exception as e :
+            print(e)
+
+    def get_access_token(self, code, location):
+        data = {
+            "client_id" : self.client_id,
+            "client_secret" : self.client_secret,
+            "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
+            "code" : code,
+            "redirect_uri" : "http://localhost:8000/success"
+        }        
+        
+        access = requests.post(self.access_url, headers=self.headers, data=data)
+        vals = access.json()
+        try:
+            data = Api_Key_Data(
+                access_token = vals['access_token'],
+                companyId = vals['companyId'],
+                access_expires_in = vals['expires_in'],
+                locationId = vals['locationId'],
+                refresh_token = vals['refresh_token'],
+            )
+            data.save()
         except Exception as e:
             print(e, "This is the occured exception")
-            data = Api_Key_Data.objects.get(location = location)
-            data.refresh_token = vals['refresh_token']
-            return redirect(self.get)
+            self.get_refresh_token(location)
+        
 
 
 
