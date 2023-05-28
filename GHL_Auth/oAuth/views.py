@@ -22,32 +22,29 @@ class BaseView(View):
         "Accept" : "application/json",
         "Content-Type" : "application/x-www-form-urlencoded"
     }
+    redirect_url = "http://localhost:8000/success"
 
 
     def get_refresh_token(self, location):
-        print(location)
         obj = Api_Key_Data.objects.get(locationId = location)
-        print(obj.refresh_token)
         data = {
             "client_id" : self.client_id,
             "client_secret" : self.client_secret,
             "grant_type" : "refresh_token",
             "refresh_token" : obj.refresh_token,
-            "redirect_uri" : "http://localhost:8000/success",
+            "redirect_uri" : self.redirect_url,
         }
         refresh = requests.post(self.access_url, headers=self.headers, data=data)
         vals = refresh.json()
+        pprint(vals)
         try:
-            data = Api_Key_Data(
-                access_token = vals['access_token'],
-                companyId = vals['companyId'],
-                access_expires_in = vals['expires_in'],
-                locationId = vals['locationId'],
-                refresh_token = vals['refresh_token'],
-            )
+            data = obj
+            obj.access_token = vals['access_token']
+            obj.refresh_token = vals['refresh_token']
+            obj.access_expires_in = vals['expires_in']
             data.save()
         except Exception as e :
-            print(e)
+            print(e, "Exception occured in get_refresh_token")
 
     def get_access_token(self, code, location):
         data = {
@@ -55,7 +52,7 @@ class BaseView(View):
             "client_secret" : self.client_secret,
             "grant_type" : "authorization_code", #go and check the api calls in the website for the grant type
             "code" : code,
-            "redirect_uri" : "http://localhost:8000/success"
+            "redirect_uri" : self.redirect_url
         }        
         
         access = requests.post(self.access_url, headers=self.headers, data=data)
@@ -70,7 +67,7 @@ class BaseView(View):
             )
             data.save()
         except Exception as e:
-            print(e, "This is the occured exception")
+            print(e, "This is the occured exception in get_access_token")
             self.get_refresh_token(location)
         
 
