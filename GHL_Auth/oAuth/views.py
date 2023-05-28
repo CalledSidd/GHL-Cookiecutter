@@ -43,12 +43,13 @@ class BaseView(View):
                 locationId = vals['locationId'],
                 refresh_token = vals['refresh_token'],
             )
+            data.save(update_fields=['access_token', 'access_expires_in','refresh_token'])
         except Exception as e:
             print(e, "This is the occured exception")
             data = Api_Key_Data.objects.get(location = location)
             data.refresh_token = vals['refresh_token']
             return redirect(self.get)
-        data.save()
+
 
 
 
