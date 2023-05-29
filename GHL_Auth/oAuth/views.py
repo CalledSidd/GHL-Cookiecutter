@@ -12,6 +12,7 @@ import requests
 import json
 
 # Create your views here.
+# Validate Token Section
 class BaseView(View):
 
     template = 'auth.html'
@@ -102,3 +103,7 @@ class BaseView(View):
 
 def success(request):
     return render(request, 'success.html')
+
+# Validate Token Section End
+
+# Get Contacts Endpoint 
