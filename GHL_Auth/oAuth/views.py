@@ -26,26 +26,28 @@ class BaseView(View):
 
 
     def get_refresh_token(self, location):
-        obj = Api_Key_Data.objects.get(locationId = location)
-        print(type(obj.refresh_token))
-        data = {
-            "client_id" : self.client_id,
-            "client_secret" : self.client_secret,
-            "grant_type" : "refresh_token",
-            "refresh_token" : obj.refresh_token,
-            "redirect_uri" : self.redirect_url,
-        }
-        refresh = requests.post(self.access_url, headers=self.headers, data=data)
-        vals = refresh.json()
-        pprint(vals)
         try:
-            data = obj
-            obj.access_token = vals['access_token']
-            obj.refresh_token = vals['refresh_token']
-            obj.access_expires_in = vals['expires_in']
-            data.save()
+            obj = Api_Key_Data.objects.get(locationId = location)
+            if obj:
+                print(type(obj.refresh_token))
+                data = {
+                    "client_id" : self.client_id,
+                    "client_secret" : self.client_secret,
+                    "grant_type" : "refresh_token",
+                    "refresh_token" : obj.refresh_token,
+                    "redirect_uri" : self.redirect_url,
+                }
+                refresh = requests.post(self.access_url, headers=self.headers, data=data)
+                vals = refresh.json()
+                pprint(vals)
+                data = obj
+                obj.access_token = vals['access_token']
+                obj.refresh_token = vals['refresh_token']
+                obj.access_expires_in = vals['expires_in']
+                data.save()
         except Exception as e :
-            print(e, "Exception occured in get_refresh_token")
+                print(e, "Exception occured in get_refresh_token")
+                return redirect(self.get)
 
     def get_access_token(self, code, location):
         data = {

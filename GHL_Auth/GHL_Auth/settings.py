@@ -136,5 +136,3 @@ GHL_URL = config('GHL_URL')
 CLIENT_ID = config('CLIENT_ID')
 
 CLIENT_SECRET = config('CLIENT_SECRET')
-
-LOCATION = config('LOCATION')
