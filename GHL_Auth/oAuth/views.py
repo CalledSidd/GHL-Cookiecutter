@@ -113,6 +113,10 @@ class BaseView(View):
 
 class Contacts(APIView):
     template = 'contact.html'
+
+    def get_custom_fields(self, contact, id):
+        pass
+
     def get(self, request):
         contact_id = request.GET.get('contact_id')
         auth = Api_Key_Data.objects.get(locationId = 'Fdjk8SCGrVjyXe1n09cE')
@@ -126,3 +130,4 @@ class Contacts(APIView):
         response = requests.get(contact_get, headers=headers)
         pprint(response.json())
         return Response(response)
+    
