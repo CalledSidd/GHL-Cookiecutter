@@ -17,7 +17,6 @@ class BaseView(View):
     client_id = settings.CLIENT_ID
     client_secret = settings.CLIENT_SECRET
     access_url = 'https://services.leadconnectorhq.com/oauth/token'
-    
     headers = {
         "Accept" : "application/json",
         "Content-Type" : "application/x-www-form-urlencoded"
