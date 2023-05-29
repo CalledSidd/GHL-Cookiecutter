@@ -13,14 +13,20 @@ import json
 
 # Create your views here.
 class BaseView(View):
+
     template = 'auth.html'
+
     client_id = settings.CLIENT_ID
+
     client_secret = settings.CLIENT_SECRET
-    access_url = 'https://services.leadconnectorhq.com/oauth/token'
+
+    access_url = settings.ACCESS_URL
+
     headers = {
         "Accept" : "application/json",
         "Content-Type" : "application/x-www-form-urlencoded"
     }
+
     redirect_url = "http://localhost:8000/success"
 
 
@@ -45,8 +51,8 @@ class BaseView(View):
                 obj.access_expires_in = vals['expires_in']
                 data.save()
         except Exception as e :
-                print(e, "Exception occured in get_refresh_token")
                 return redirect(self.get)
+
 
     def get_access_token(self, code, location):
         data = {
@@ -59,7 +65,6 @@ class BaseView(View):
         
         access = requests.post(self.access_url, headers=self.headers, data=data)
         vals = access.json()
-        pprint(vals)
         try:
             data = Api_Key_Data(
                 access_token = vals['access_token'],
@@ -70,11 +75,7 @@ class BaseView(View):
             )
             data.save()
         except Exception as e:
-            print(e, "This is the occured exception in get_access_token")
             self.get_refresh_token(location)
-        
-
-
 
 
     def get(self, request):
@@ -85,7 +86,8 @@ class BaseView(View):
            'url' : url
        }
        return render(request, self.template, context)
-    
+
+
     def post(self, request):
         try:
             location = request.POST["location"]
