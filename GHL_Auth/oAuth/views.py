@@ -4,6 +4,9 @@ from django.views import View
 from django.conf import settings
 
 
+from rest_framework.response import Response
+from rest_framework.views import APIView
+
 from . models import Api_Key_Data
 
 from pprint import pprint
@@ -108,7 +111,7 @@ class BaseView(View):
 
 # Get Contacts Endpoint 
 
-class Contacts(View):
+class Contacts(APIView):
     template = 'contact.html'
     def get(self, request):
         contact_id = request.GET.get('contact_id')
@@ -122,4 +125,4 @@ class Contacts(View):
         }
         response = requests.get(contact_get, headers=headers)
         pprint(response.json())
-        return render(request, self.template)
+        return Response(response)
