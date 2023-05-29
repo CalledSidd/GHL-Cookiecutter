@@ -97,7 +97,7 @@ class BaseView(View):
                 self.get_access_token(code=code, location=location)
         except:
             return redirect(self.get)
-        return redirect(self.success)
+        return redirect('success')
     
     def success(request):
         return render(request, 'success.html')
@@ -112,5 +112,14 @@ class Contacts(View):
     template = 'contact.html'
     def get(self, request):
         contact_id = request.GET.get('contact_id')
-        print(contact_id)
+        auth = Api_Key_Data.objects.get(locationId = 'Fdjk8SCGrVjyXe1n09cE')
+        token = auth.access_token
+        contact_get = f'https://services.leadconnectorhq.com/contacts/{contact_id}'
+        headers = {
+            "Authorization" : f'Bearer {token}',
+            "Version" : "2021-07-28",
+            "Accept" : "application/json"
+        }
+        response = requests.get(contact_get, headers=headers)
+        pprint(response.json())
         return render(request, self.template)
