@@ -59,6 +59,7 @@ class BaseView(View):
         
         access = requests.post(self.access_url, headers=self.headers, data=data)
         vals = access.json()
+        pprint(vals)
         try:
             data = Api_Key_Data(
                 access_token = vals['access_token'],
