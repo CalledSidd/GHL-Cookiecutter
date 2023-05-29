@@ -97,13 +97,20 @@ class BaseView(View):
                 self.get_access_token(code=code, location=location)
         except:
             return redirect(self.get)
-        return redirect(success)
+        return redirect(self.success)
     
+    def success(request):
+        return render(request, 'success.html')
 
 
-def success(request):
-    return render(request, 'success.html')
 
 # Validate Token Section End
 
 # Get Contacts Endpoint 
+
+class Contacts(View):
+    template = 'contact.html'
+    def get(self, request):
+        contact_id = request.GET.get('contact_id')
+        print(contact_id)
+        return render(request, self.template)
