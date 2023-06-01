@@ -113,13 +113,27 @@ class BaseView(View):
 
 class Contacts(APIView):
     template = 'contact.html'
+    locationid = 'Fdjk8SCGrVjyXe1n09cE'
+    auth = Api_Key_Data.objects.get(locationId = locationid)
+    token = auth.access_token
 
     def get_custom_fields(self, id):
-        pass
+        headers = {
+            "Authorization" : f'Bearer {self.token}',
+            "Version" : "2021-07-28",
+            "Accept" : "application/json"
+        }
+        cust_url = f'https://services.leadconnectorhq.com/locations/{self.locationid}/customFields/{id}'
+        cust_res = requests.get(cust_url, headers=headers)
+        field = cust_res.json()['customField']
+        fieldName = field['name']
+        print(fieldName)
+        return fieldName
+
 
     def get(self, request):
         contact_id = request.GET.get('contact_id')
-        auth = Api_Key_Data.objects.get(locationId = 'Fdjk8SCGrVjyXe1n09cE')
+        auth = Api_Key_Data.objects.get(locationId = self.locationid)
         token = auth.access_token
         contact_get = f'https://services.leadconnectorhq.com/contacts/{contact_id}'
         headers = {
@@ -132,7 +146,8 @@ class Contacts(APIView):
         custField = parsed_r['contact']['customFields']
         custFieldId = custField[0]['id']
         if custFieldId:
-            self.get_custom_fields(custFieldId)
+            name = self.get_custom_fields(custFieldId)
+            parsed_r['contact']['customFields'][0]['id'] = name
         pprint_r = pprint.pformat(parsed_r)
         return Response(pprint_r)
     
