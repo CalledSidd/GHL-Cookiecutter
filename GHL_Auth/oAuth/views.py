@@ -144,10 +144,11 @@ class Contacts(APIView):
         response = requests.get(contact_get, headers=headers)
         parsed_r = response.json()
         custField = parsed_r['contact']['customFields']
-        custFieldId = custField[0]['id']
-        if custFieldId:
-            name = self.get_custom_fields(custFieldId)
-            parsed_r['contact']['customFields'][0]['id'] = name
-        pprint_r = pprint.pformat(parsed_r)
+        for n in range(len(custField)):
+            custFieldId = custField[n]['id']
+            if custFieldId:
+                name = self.get_custom_fields(custFieldId)
+                parsed_r['contact']['customFields'][n]['id'] = name
+        pprint_r = parsed_r
         return Response(pprint_r)
     
