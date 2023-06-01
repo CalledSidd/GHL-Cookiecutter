@@ -16,23 +16,16 @@ import json
 
 # Create your views here.
 # Validate Token Section
-class BaseView(View):
-
+class AccessView(View):
     template = 'auth.html'
-
     client_id = settings.CLIENT_ID
-
     client_secret = settings.CLIENT_SECRET
-
     access_url = settings.ACCESS_URL
-
     headers = {
         "Accept" : "application/json",
         "Content-Type" : "application/x-www-form-urlencoded"
     }
-
     redirect_url = "http://localhost:8000/success"
-
 
     def get_refresh_token(self, location):
         try:
@@ -111,7 +104,7 @@ class BaseView(View):
 
 # Get Contacts Endpoint 
 
-class Contacts(APIView):
+class Contact(APIView):
     template = 'contact.html'
     locationid = 'Fdjk8SCGrVjyXe1n09cE'
     auth = Api_Key_Data.objects.get(locationId = locationid)
@@ -152,3 +145,21 @@ class Contacts(APIView):
         pprint_r = parsed_r
         return Response(pprint_r)
     
+class Contacts(APIView):
+    locationid = 'Fdjk8SCGrVjyXe1n09cE'
+    get_url = 'https://services.leadconnectorhq.com/contacts/'
+    querystring = {'locationId' : locationid}
+    auth = Api_Key_Data.objects.get(locationId = locationid)
+    token = auth.access_token
+
+
+    def get(self, request):
+        headers = {
+            "Authorization": f'Bearer {self.token}',
+            "Version": "2021-07-28",
+            "Accept": "application/json"
+        }
+        response = requests.get(self.get_url, headers=headers, params=self.querystring)
+        response_meta = response.json()['meta']
+        print(response_meta['nextPageUrl'])
+        return Response(response.json())

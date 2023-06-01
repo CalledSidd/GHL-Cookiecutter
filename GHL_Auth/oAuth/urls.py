@@ -1,9 +1,10 @@
 from django.urls import path
-from . views import BaseView, Contacts
+from . views import AccessView, Contact, Contacts
 
 
 urlpatterns = [
-    path('', BaseView.as_view(), name='base'),
-    path('success', BaseView.success, name='success'),
-    path('get_contact/',Contacts.as_view(), name='contacts')
+    path('', AccessView.as_view()),
+    path('success', AccessView.success),
+    path('get_contact/',Contact.as_view()),
+    path('contacts',Contacts.as_view()),
 ]
