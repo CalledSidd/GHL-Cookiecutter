@@ -9,7 +9,7 @@ from rest_framework.views import APIView
 
 from . models import Api_Key_Data
 
-from pprint import pprint
+import pprint
 
 import requests
 import json
@@ -114,7 +114,7 @@ class BaseView(View):
 class Contacts(APIView):
     template = 'contact.html'
 
-    def get_custom_fields(self, contact, id):
+    def get_custom_fields(self, id):
         pass
 
     def get(self, request):
@@ -128,6 +128,11 @@ class Contacts(APIView):
             "Accept" : "application/json"
         }
         response = requests.get(contact_get, headers=headers)
-        pprint(response.json())
-        return Response(response)
+        parsed_r = response.json()
+        custField = parsed_r['contact']['customFields']
+        custFieldId = custField[0]['id']
+        if custFieldId:
+            self.get_custom_fields(custFieldId)
+        pprint_r = pprint.pformat(parsed_r)
+        return Response(pprint_r)
     
