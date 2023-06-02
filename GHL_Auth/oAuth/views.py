@@ -154,8 +154,11 @@ class Contacts(APIView):
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
+    def get_next_contact(self, request):
+        pass
 
-    def get(self, request):
+
+    def get(self, request, ):
         headers = {
             "Authorization": f'Bearer {self.token}',
             "Version": "2021-07-28",
@@ -164,7 +167,15 @@ class Contacts(APIView):
         response = requests.get(self.get_url, headers=headers, params=self.querystring)
         if response:
             response_meta = response.json()['meta']
-            next_page_url = response_meta['nextPageUrl']
-            print(next_page_url)
+            meta_data = [
+                ('next_page_url', response_meta['nextPageUrl']),
+                ('start_after', response_meta['startAfter']),
+                ('start_after_id', response_meta['startAfterId']),
+                ('next_page', response_meta['nextPage']),
+                ('current_page' , response_meta['currentPage']),
+                ('prev_page' , response_meta['prevPage'])
+            ]
+            for key, value in meta_data:
+                print(f'{key} : {value}')
             return Response(response.json())
         return Response(status=status.HTTP_404_NOT_FOUND)
