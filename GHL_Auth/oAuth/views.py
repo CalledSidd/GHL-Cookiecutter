@@ -6,6 +6,7 @@ from django.conf import settings
 
 from rest_framework.response import Response
 from rest_framework.views import APIView
+from rest_framework import status
 
 from . models import Api_Key_Data
 
@@ -27,6 +28,21 @@ class AccessView(View):
     }
     redirect_url = "http://localhost:8000/success"
 
+
+    def success(request):
+        return render(request, 'success.html')
+
+    def get(self, request):
+       url = settings.GHL_URL
+       code =  request.GET.get('code')
+       context = {
+           'code' : code,
+           'url' : url
+       }
+       return render(request, self.template, context)
+
+
+
     def get_refresh_token(self, location):
         try:
             obj = Api_Key_Data.objects.get(locationId = location)
@@ -41,13 +57,14 @@ class AccessView(View):
                 }
                 refresh = requests.post(self.access_url, headers=self.headers, data=data)
                 vals = refresh.json()
-                pprint(vals)
+                pprint.pprint(vals)
                 data = obj
                 obj.access_token = vals['access_token']
                 obj.refresh_token = vals['refresh_token']
                 obj.access_expires_in = vals['expires_in']
                 data.save()
         except Exception as e :
+                print(e, "Occured Exception at refresh")
                 return redirect(self.get)
 
 
@@ -72,17 +89,8 @@ class AccessView(View):
             )
             data.save()
         except Exception as e:
+            print(e, "Occured Exception at access")
             self.get_refresh_token(location)
-
-
-    def get(self, request):
-       url = settings.GHL_URL
-       code =  request.GET.get('code')
-       context = {
-           'code' : code,
-           'url' : url
-       }
-       return render(request, self.template, context)
 
 
     def post(self, request):
@@ -94,12 +102,6 @@ class AccessView(View):
         except:
             return redirect(self.get)
         return redirect('success')
-    
-    def success(request):
-        return render(request, 'success.html')
-
-
-
 # Validate Token Section End
 
 # Get Contacts Endpoint 
@@ -160,7 +162,9 @@ class Contacts(APIView):
             "Accept": "application/json"
         }
         response = requests.get(self.get_url, headers=headers, params=self.querystring)
-        response_meta = response.json()['meta']
-        next_page_url = response_meta['nextPageUrl']
-        print(next_page_url)
-        return Response(response.json())
+        if response:
+            response_meta = response.json()['meta']
+            next_page_url = response_meta['nextPageUrl']
+            print(next_page_url)
+            return Response(response.json())
+        return Response(status=status.HTTP_404_NOT_FOUND)
