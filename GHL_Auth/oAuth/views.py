@@ -161,6 +161,6 @@ class Contacts(APIView):
         }
         response = requests.get(self.get_url, headers=headers, params=self.querystring)
         response_meta = response.json()['meta']
-        print(response_meta['nextPageUrl'])
         next_page_url = response_meta['nextPageUrl']
+        print(next_page_url)
         return Response(response.json())
