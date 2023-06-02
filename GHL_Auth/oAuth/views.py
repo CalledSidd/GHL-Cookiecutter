@@ -151,28 +151,37 @@ class Contact(APIView):
     
 class Contacts(APIView):
     locationid = 'w9LTt2jMahHxaA0vkl0r'
-    querystring = {'locationId' : locationid}
+    
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
     def get(self, request):
         contacts = []
         get_url = 'https://services.leadconnectorhq.com/contacts/'
-        # get_url = 'https://services.leadconnectorhq.com/contacts/?locationId=w9LTt2jMahHxaA0vkl0r&startAfter=1685476469636&startAfterId=E0XK6HlnYptDwDZgZ7q8'
+        querystring = {'locationId' :self.locationid, "limit": 20}
         headers = {
             "Authorization": f'Bearer {self.token}',
             "Version": "2021-07-28",
             "Accept": "application/json"
         }
         count = 0
+        first_response = requests.get(get_url, headers=headers, params=querystring)
+        first_res_json = first_response.json()
+        contacts += first_res_json.get('contacts')
+        nexturl = first_res_json['meta'].get('nextPageUrl')
+        print(nexturl)
         while True:
-            try:
-                response = requests.get(get_url, headers=headers, params=self.querystring)
-                response_data = response.json()
-                nextPage = response_data['meta'].get('nextPageUrl')
-                if nextPage:
-                    get_url = nextPage
-                    print(get_url)
-                else:
+            if count < 10:
+                print(count)
+                response = requests.get(nexturl, headers=headers)
+                if response.status_code == 200:
+                    respone_json = response.json()
+                    contacts += respone_json.get('contacts')
+                    nexturl = respone_json['meta'].get('nextPageUrl')
+                    # pprint.pprint(contacts)
+                else :
                     break
-            return Response(response_data)
+            else:
+                break
+            count += 1
+        return Response(contacts)
