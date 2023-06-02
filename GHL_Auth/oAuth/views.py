@@ -9,6 +9,8 @@ from rest_framework.views import APIView
 from rest_framework import status
 
 from . models import Api_Key_Data
+from . pagination import ContactsPagination
+from . serializers import ContactSerializer
 
 import pprint
 
@@ -108,7 +110,7 @@ class AccessView(View):
 
 class Contact(APIView):
     template = 'contact.html'
-    locationid = 'Fdjk8SCGrVjyXe1n09cE'
+    locationid = 'w9LTt2jMahHxaA0vkl0r'
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
@@ -148,34 +150,29 @@ class Contact(APIView):
         return Response(pprint_r)
     
 class Contacts(APIView):
-    locationid = 'Fdjk8SCGrVjyXe1n09cE'
-    get_url = 'https://services.leadconnectorhq.com/contacts/'
+    locationid = 'w9LTt2jMahHxaA0vkl0r'
     querystring = {'locationId' : locationid}
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
-    def get_next_contact(self, request):
-        pass
-
-
-    def get(self, request, ):
+    def get(self, request):
+        contacts = []
+        get_url = 'https://services.leadconnectorhq.com/contacts/'
+        # get_url = 'https://services.leadconnectorhq.com/contacts/?locationId=w9LTt2jMahHxaA0vkl0r&startAfter=1685476469636&startAfterId=E0XK6HlnYptDwDZgZ7q8'
         headers = {
             "Authorization": f'Bearer {self.token}',
             "Version": "2021-07-28",
             "Accept": "application/json"
         }
-        response = requests.get(self.get_url, headers=headers, params=self.querystring)
-        if response:
-            response_meta = response.json()['meta']
-            meta_data = [
-                ('next_page_url', response_meta['nextPageUrl']),
-                ('start_after', response_meta['startAfter']),
-                ('start_after_id', response_meta['startAfterId']),
-                ('next_page', response_meta['nextPage']),
-                ('current_page' , response_meta['currentPage']),
-                ('prev_page' , response_meta['prevPage'])
-            ]
-            for key, value in meta_data:
-                print(f'{key} : {value}')
-            return Response(response.json())
-        return Response(status=status.HTTP_404_NOT_FOUND)
+        count = 0
+        while True:
+            try:
+                response = requests.get(get_url, headers=headers, params=self.querystring)
+                response_data = response.json()
+                nextPage = response_data['meta'].get('nextPageUrl')
+                if nextPage:
+                    get_url = nextPage
+                    print(get_url)
+                else:
+                    break
+            return Response(response_data)
