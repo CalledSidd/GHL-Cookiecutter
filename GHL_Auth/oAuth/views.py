@@ -11,6 +11,7 @@ from rest_framework import status
 from . models import Api_Key_Data
 from . pagination import ContactsPagination
 from . serializers import ContactSerializer
+from write import write_to_csv
 
 import pprint
 
@@ -177,11 +178,14 @@ class Contacts(APIView):
                 if response.status_code == 200:
                     respone_json = response.json()
                     contacts += respone_json.get('contacts')
-                    nexturl = respone_json['meta'].get('nextPageUrl')
-                    # pprint.pprint(contacts)
-                else :
+                    nexturl = respone_json['meta'].get('nextPageUrl') 
+                    if nexturl is None:
+                        return Response(contacts)
+                else:
                     break
-            else:
+            else: 
                 break
             count += 1
+        if contacts:
+            write_to_csv(contacts)
         return Response(contacts)

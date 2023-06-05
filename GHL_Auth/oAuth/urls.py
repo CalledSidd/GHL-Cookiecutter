@@ -2,6 +2,7 @@ from django.urls import path
 from . views import AccessView, Contact, Contacts
 
 
+
 urlpatterns = [
     path('', AccessView.as_view(), name='base'),
     path('success', AccessView.success, name='success'),
