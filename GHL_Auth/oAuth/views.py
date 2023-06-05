@@ -111,7 +111,7 @@ class AccessView(View):
 
 class Contact(APIView):
     template = 'contact.html'
-    locationid = 'w9LTt2jMahHxaA0vkl0r'
+    locationid = 'Fdjk8SCGrVjyXe1n09cE'
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
@@ -186,6 +186,6 @@ class Contacts(APIView):
                 count += 1
                 if contacts:
                     write_to_csv(contacts)
-        except:
-            pass
+        except Exception as e:
+            print(e, "Exception in the contacts")
         return Response(contacts)
