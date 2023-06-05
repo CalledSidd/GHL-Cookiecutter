@@ -111,7 +111,7 @@ class AccessView(View):
 
 class Contact(APIView):
     template = 'contact.html'
-    locationid = 'Fdjk8SCGrVjyXe1n09cE'
+    locationid = 'w9LTt2jMahHxaA0vkl0r'
     auth = Api_Key_Data.objects.get(locationId = locationid)
     token = auth.access_token
 
@@ -141,18 +141,14 @@ class Contact(APIView):
         }
         response = requests.get(contact_get, headers=headers)
         parsed_r = response.json()
-        pprint.pprint(parsed_r)
-        if parsed_r:
-            custField = parsed_r['contact']['customFields']
-            for n in range(len(custField)):
-                custFieldId = custField[n]['id']
-                if custFieldId:
-                    name = self.get_custom_fields(custFieldId)
-                    parsed_r['contact']['customFields'][n]['id'] = name
-            pprint_r = parsed_r
-            return Response(pprint_r)
-        else:
-            return Response(status=status.HTTP_401_UNAUTHORIZED)
+        custField = parsed_r['contact']['customFields']
+        for n in range(len(custField)):
+            custFieldId = custField[n]['id']
+            if custFieldId:
+                name = self.get_custom_fields(custFieldId)
+                parsed_r['contact']['customFields'][n]['id'] = name
+        pprint_r = parsed_r
+        return Response(pprint_r)
     
 class Contacts(APIView):
     locationid = 'w9LTt2jMahHxaA0vkl0r'
