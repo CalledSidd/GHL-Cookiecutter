@@ -171,21 +171,18 @@ class Contacts(APIView):
         contacts += first_res_json.get('contacts')
         nexturl = first_res_json['meta'].get('nextPageUrl')
         print(nexturl)
-        while True:
-            if count < 10:
-                print(count)
-                response = requests.get(nexturl, headers=headers)
-                if response.status_code == 200:
-                    respone_json = response.json()
-                    contacts += respone_json.get('contacts')
-                    nexturl = respone_json['meta'].get('nextPageUrl') 
-                    if nexturl is None:
-                        return Response(contacts)
-                else:
-                    break
-            else: 
+        while True:     
+            print(count)
+            response = requests.get(nexturl, headers=headers)
+            if response.status_code == 200:
+                respone_json = response.json()
+                contacts += respone_json.get('contacts')
+                nexturl = respone_json['meta'].get('nextPageUrl') 
+                if nexturl is None:
+                    return Response(contacts)
+            else:
                 break
             count += 1
-        if contacts:
-            write_to_csv(contacts)
+            if contacts:
+                write_to_csv(contacts)
         return Response(contacts)
