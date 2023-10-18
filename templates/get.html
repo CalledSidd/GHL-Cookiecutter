@@ -1,0 +1,61 @@
+{% extends 'base.html' %}
+
+{% block content %}
+
+<div class="container">
+  <form action="" method="post">
+    {% csrf_token %}
+    <div class="d-flex flex-column align-items-center w-100 h-100">
+      <div class="w-50 mt-4">
+        <label for="location">GHL Location ID</label>
+        <input
+          type="text"
+          id="location"
+          name="location"
+          class="form-control"
+          placeholder="Enter GHL Location ID"
+        />
+      </div>
+      <div class="w-50 mt-4">
+        <label for="code">GHL Private API Access Code</label>
+        {% if code %}
+        <input
+          type="text"
+          id="code"
+          name="code"
+          value="{{code}}"
+          class="form-control"
+        />
+        {% else %}
+        <input
+          type="text"
+          id="code"
+          name="code"
+          placeholder="Enter GHL Private API Access Code"
+          class="form-control"
+        />
+        {% endif %}
+      </div>
+      <div class="d-md-flex mt-4 md-gap-4 jusitfy">
+        <div class="gap-4s">
+          <button
+            class="btn btn-primary"
+            type="submit"
+            value="submit"
+          >
+            Validate and Submit
+          </button>
+        </div>
+        <div>
+          <a href="{{url}}">
+            <div class="btn btn-success">
+              Grab your GHL Access Code
+            </div>
+          </a>
+        </div>
+      </div>
+    </div>
+  </form>
+</div>
+
+{% endblock content %}
