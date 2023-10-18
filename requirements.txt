@@ -1,0 +1,14 @@
+# Django
+Django==4.2.2
+
+# Django-filters
+django-filter==23.2
+
+# Decouple
+python-decouple==3.8
+
+
+{% if cookiecutter.use_drf == 'y' %}
+# Django Rest Framework
+djangorestframework==3.14.0
+{% endif %}
