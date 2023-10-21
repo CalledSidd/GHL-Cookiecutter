@@ -33,3 +33,4 @@ and these lines to the get.html
 {% endblock content %}
 ```
 Now the template should work and you should see the base template with the styles
+Customise to fit requirements
