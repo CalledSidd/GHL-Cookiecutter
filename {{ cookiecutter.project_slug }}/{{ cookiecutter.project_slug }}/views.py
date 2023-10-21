@@ -5,6 +5,7 @@ from django.conf import settings
 
 import requests
 
+from auths.helper import generate_url
 from auths.models import Authtokendata
 
 class Onboarding(View):
@@ -22,7 +23,7 @@ class Onboarding(View):
 
     def get(self, request):
         template = 'get.html'
-        url = settings.GHL_URL
+        url = generate_url()
         code = request.GET.get('code')
         context = {
             'code' : code, 
