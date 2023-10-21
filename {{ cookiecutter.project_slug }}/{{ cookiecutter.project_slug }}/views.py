@@ -60,7 +60,7 @@ class Onboarding(View):
             )
             data.save()
         except Exception as e:
-            print(e)
+            print(e, "Exception in access token")
             self.get_refresh_token(location)
 
     def get_refresh_token(self, location):
@@ -81,5 +81,5 @@ class Onboarding(View):
                 token_data.access_expires_in = response['expires_in']
                 token_data.save()
         except Exception as e:
-            print(e)
+            print(e, "Exception in refresh token")
             return redirect(self.get)
