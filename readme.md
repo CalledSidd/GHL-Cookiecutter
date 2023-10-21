@@ -32,3 +32,4 @@ and these lines to the get.html
     <!--HTML CONTENT-->
 {% endblock content %}
 ```
+Now the template should work and you should see the base template with the styles
