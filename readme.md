@@ -19,6 +19,7 @@ python manage.py migrate
 <h1>Make the templates functional</h1>
 <p>On the base url styles will not be loaded to load the styles</p>
 add these lines on base.html
+
 ```
     {% block content %}
     {% endblock content %}
