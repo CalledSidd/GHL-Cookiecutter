@@ -126,7 +126,11 @@ DEFAULT_AUTO_FIELD = "django.db.models.BigAutoField"
 
 # GoHighLevel Config
 
-GHL_URL = config('GHL_URL')
+BASE = 'https://marketplace.gohighlevel.com/'
+REDIRECT_URL = 'http://localhost:8000/'
+SCOPE = [
+    
+]
 CLIENT_ID = config('CLIENT_ID')
 CLIENT_SECRET = config('CLIENT_SECRET')
 ACCESS_URL = config('ACCESS_URL')
