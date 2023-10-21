@@ -13,15 +13,6 @@
       </div>
       <div class="w-50 mt-4">
         <label for="code">GHL Private API Access Code</label>
-        {% if code %}
-        <input
-          type="text"
-          id="code"
-          name="code"
-          value="{{code}}"
-          class="form-control"
-        />
-        {% else %}
         <input
           type="text"
           id="code"
@@ -29,7 +20,6 @@
           placeholder="Enter GHL Private API Access Code"
           class="form-control"
         />
-        {% endif %}
       </div>
       <div class="d-md-flex mt-4 md-gap-4 jusitfy">
         <div class="gap-4s">
