@@ -14,3 +14,5 @@ if working migrate
 python manage.py makemigrations
 python manage.py migrate
 ```
+<h1>GoHighLevel Setup</h1>
+<p>When using GHL 2.0, you will need the CLIENT ID, the CLIENT SECRET, add them to the .env file</p>
