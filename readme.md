@@ -29,5 +29,6 @@ and these lines to the get.html
 ```
 {% extends "base.html" %}
 {% block content %}
+    <!--HTML CONTENT-->
 {% endblock content %}
 ```
