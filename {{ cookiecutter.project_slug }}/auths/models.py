@@ -7,7 +7,7 @@ class Authtokendata(models.Model):
     access_expires_in = models.IntegerField()
     locationId = models.CharField(max_length=100, unique=True)
     refresh_token = models.CharField(max_length=100)
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField()
 
     def __str__(self):
         return self.locationId
