@@ -15,7 +15,7 @@ INSTALLED_APPS = [
     'tailwind',
     ]
 
-ROOT_URLCONF = '{{ cookiecutter.project_name}}.urls'
+ROOT_URLCONF = '{{cookiecutter.project_slug}}.urls'
 
 TEMPLATES = [
     {
