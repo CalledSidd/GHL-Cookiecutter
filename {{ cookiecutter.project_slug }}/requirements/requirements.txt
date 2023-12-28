@@ -1,0 +1,27 @@
+# Django
+Django==4.2.2
+
+# Django-filters
+django-filter==23.2
+
+# Decouple
+python-decouple==3.8
+
+# requests
+requests==2.31.0
+
+# CORS Headers 
+django-cors-headers==4.3.1
+
+# drf_yasg 
+drf-yasg==1.21.7
+
+{% if cookiecutter.use_drf == 'y' %}
+# Django Rest Framework
+djangorestframework==3.14.0
+{% endif %}
+
+{% if cookiecutter.use_tailwind == 'y' %}
+# Django Rest Framework
+django-tailwind==3.6.0
+{% endif %}
