@@ -5,3 +5,4 @@ GHL_URL = ''
 CLIENT_ID = ''
 CLIENT_SECRET = ''
 ACCESS_URL = ''
+ENV_NAME="Local"
